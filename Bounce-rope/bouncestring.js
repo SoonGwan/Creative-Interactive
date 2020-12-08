@@ -41,7 +41,7 @@ export class BounceString {
   animate(ctx, moveX, moveY) {
     ctx.beginPath();
     ctx.fillStyle = '#ff00ff';
-    ctx.arc(moveX, moveY, 60, 0, Math.PI * 2, false);
+    ctx.arc(moveX, moveY, 20, 0, Math.PI * 2, false);
     ctx.fill();
 
     ctx.beginPath();
@@ -89,7 +89,6 @@ export class BounceString {
 
       prevX = this.points[i].x;
       prevY = this.points[i].y;
-      console.log(prevX, prevY);
     }
     ctx.lineTo(prevX, prevY);
     ctx.stroke();
