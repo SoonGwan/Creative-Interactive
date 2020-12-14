@@ -1,4 +1,3 @@
-import { Text } from './text.js';
 import { Visual } from './visual.js';
 class App {
   constructor() {
@@ -10,26 +9,25 @@ class App {
       },
       fontactive: () => {
         this.visual = new Visual();
-
-        window.addEventListener('resize', this.resize.bind(this), false);
+        window.addEventListener('resize', () => this.resize.bind(this), false);
         this.resize();
 
         requestAnimationFrame(this.animate.bind(this));
       },
     });
   }
-
   setWebgl() {
     this.renderer = new PIXI.Renderer({
       width: document.body.clientWidth,
-      height: window.innerHeight,
+      height: document.body.clientHeight,
       antialias: true,
       transparent: false,
-      resolition: window.devicePixelRatio > 1 ? 2 : 1,
+      resolution: window.devicePixelRatio > 1 ? 2 : 1,
       autoDensity: true,
       powerPerformance: 'high-performance',
       backgroundColor: 0xffffff,
     });
+
     document.body.appendChild(this.renderer.view);
 
     this.stage = new PIXI.Container();
@@ -38,32 +36,35 @@ class App {
     blurFilter.blur = 10;
     blurFilter.autoFit = true;
 
-    const fragSource = `
-        precision mediump float;
-        varying vec2 vTextureCoord;
-        uniform sampler2D uSampler;
-        uniform float threshold;
-        uniform float mr;
-        uniform float mg;
-        uniform float mb;
-        void main(void) {
-            vec4 color = texture2D(uSampler, vTextureCoord);
-            vec3 mcolor = vec3(mr,mg,mb);
-            if(color.a > threshold) {
-                gl_FragColor = vec4(mcolor,1.0);
-            } else {
-                gl_FragColor = vec4(ver3(0,0),0.0);
-            }
+    const frageSource = `
+      precision mediump float;
+      varying vec2 vTextureCoord;
+      uniform sampler2D uSampler;
+      uniform float threshold;
+      uniform float mr;
+      uniform float mg;
+      uniform float mb;
+      void main(void) {
+        vec4 color = texture2D(uSampler, vTextureCoord);
+        vec3 mcolor = vec3(mr,mg,mb);
+        if(color.a > threshold) {
+          gl_FragColor = vec4(mcolor, 1.0);
+        } else {
+          gl_FragColor = vec4(vec3(0.0), 0.0);
         }
-
+      }
     `;
 
-    const uniformsData = {
+    const uniformData = {
       threshold: 0.5,
-      mr: 0.0 / 255.0,
-      mg: 0.0 / 255.0,
-      mb: 0.0 / 255.0,
+      mr: 123.0 / 255.0,
+      mg: 122.0 / 255.0,
+      mb: 141.0 / 255.0,
     };
+
+    const thresholdFilter = new PIXI.Filter(null, frageSource, uniformData);
+    this.stage.filters = [blurFilter, thresholdFilter];
+    this.stage.filterArea = this.renderer.screen;
   }
 
   resize() {
@@ -77,7 +78,6 @@ class App {
 
   animate(t) {
     requestAnimationFrame(this.animate.bind(this));
-
     this.visual.animate();
     this.renderer.render(this.stage);
   }

@@ -22,7 +22,6 @@ export class Text {
     this.ctx.font = `${fontWidth} ${fontSize}px ${fontName}`;
     this.ctx.fillStyle = `rgba(0,0,0,0.3)`;
     this.ctx.textBaseline = 'middle';
-
     const fontPos = this.ctx.measureText(myText);
     this.ctx.fillText(
       myText,
@@ -34,7 +33,6 @@ export class Text {
 
     return this.dotPos(density, stageWidth, stageHeight);
   }
-
   dotPos(density, stageWidth, stageHeight) {
     const imageData = this.ctx.getImageData(0, 0, stageWidth, stageHeight).data;
 

@@ -27,7 +27,7 @@ export class Visual {
 
     this.container = new PIXI.ParticleContainer(this.pos.length, {
       verticles: false,
-      position: false,
+      position: true,
       rotation: false,
       scale: false,
       uvs: false,
@@ -55,7 +55,7 @@ export class Visual {
       if (dist < minDist) {
         const angle = Math.atan2(dy, dx);
         const tx = item.x + Math.cos(angle) * minDist;
-        const ty = item.y + Math.sin(angle) * minDist;
+        const ty = item.y + Math.sign(angle) * minDist;
         const ax = tx - this.mouse.x;
         const ay = ty - this.mouse.y;
         item.vx -= ax;
