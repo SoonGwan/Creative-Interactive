@@ -16,6 +16,9 @@ export class Visual {
     };
 
     document.addEventListener('pointermove', this.onMove.bind(this), false);
+    document.addEventListener('pointermove', () =>
+      console.log(`mouseMove${this.onMove.bind(this)}`)
+    );
   }
 
   show(stageWidth, stageHeight, stage) {
@@ -23,7 +26,7 @@ export class Visual {
       stage.removeChild(this.container);
     }
 
-    this.pos = this.text.setText('A', 2, stageWidth, stageHeight);
+    this.pos = this.text.setText('T', 2, stageWidth, stageHeight);
 
     this.container = new PIXI.ParticleContainer(this.pos.length, {
       verticles: false,
